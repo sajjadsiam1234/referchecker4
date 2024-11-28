@@ -108,10 +108,7 @@ STATIC_URL = '/static/'
 # Directory to collect static files for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Additional locations for static files during development
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+
 
 # Media files (Uploaded files)
 MEDIA_URL = '/media/'
