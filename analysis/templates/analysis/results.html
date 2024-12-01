@@ -132,6 +132,19 @@
         background-color: #28a745; /* Darker green on hover */
       }
     </style>
+    <script>
+      function copyToClipboard(contentId) {
+        const content = document.getElementById(contentId).innerText.trim();
+        navigator.clipboard
+          .writeText(content)
+          .then(() => {
+            alert('Copied to clipboard!');
+          })
+          .catch((err) => {
+            alert('Failed to copy: ' + err);
+          });
+      }
+    </script>
   </head>
   <body>
     <h1 style="margin-bottom: 50px; color: #03f63c">
@@ -231,6 +244,70 @@
         {% endfor %}
       </tbody>
     </table>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <div id="20UXUY-wallets">
+      <h1>Wallet Analysis Results</h1>
+      <h2>20UXUY Wallets (Valid Count: {{ valid_count }})</h2>
+      <button onclick="copyToClipboard('20UXUY-wallets')">
+        Copy All 20UXUY
+      </button>
+      <table style="border-radius: 10px">
+        <thead>
+          <tr>
+            <th>Invitees Account</th>
+            <th>Invite Rewards</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for address in results_20UXUY %}
+          <tr>
+            <td style="font-weight: bold; font-size: medium">{{ address }}</td>
+            <td style="font-weight: bold; font-size: medium">20UXUY</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <hr class="dashed-hr" />
+
+    <style>
+      .dashed-hr {
+        border: none;
+        border-top: 2px dashed #cccccc; /* Dashed line with light gray color */
+        margin: 20px 0; /* Add spacing around the line */
+      }
+    </style>
+
+    <div id="0UXUY-wallets">
+      <h1>Wallet Analysis Results</h1>
+      <h2>0UXUY Wallets (Not Valid Count: {{ not_valid_count }})</h2>
+      <button onclick="copyToClipboard('0UXUY-wallets')">Copy All 0UXUY</button>
+      <table style="border-radius: 10px">
+        <thead>
+          <tr>
+            <th>Invitees Account</th>
+            <th>Invite Rewards</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for address in results_0UXUY %}
+          <tr>
+            <td style="font-weight: bold; font-size: medium">{{ address }}</td>
+            <td style="font-weight: bold; font-size: medium">20UXUY</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     <hr class="dashed-hr" />
 
     <style>
