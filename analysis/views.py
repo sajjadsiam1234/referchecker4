@@ -5,7 +5,7 @@ from .forms import TokenDataForm, WalletDataForm
 def trim_address(address):
     """Trims an Ethereum address to the desired format based on its length."""
     if len(address) > 8:
-        return f"{address[:4]}...{address[-4:]}"
+        return f"{address[-4:]}"
     elif len(address) < 8:
         return f"{address[-4:]}"
     else:
@@ -28,6 +28,8 @@ def transform_pairs(raw_text):
             pairs.append((current_address, clean_line))
     return pairs
 
+
+
 def analyze_wallets(request):
     """
     Analyzes the wallet addresses to check if they contain 20UXUY tokens.
@@ -35,6 +37,8 @@ def analyze_wallets(request):
     token_form = TokenDataForm()
     wallet_form = WalletDataForm()
     results = []
+    results_20UXUY = []
+    results_0UXUY = []
     valid_count = 0
     not_valid_count = 0
 
@@ -67,7 +71,7 @@ def analyze_wallets(request):
                 matched_row = token_df[token_df["Address"] == address]
                 if not matched_row.empty:
                     token = matched_row["Token"].values[0]
-                    results.append({"address": trimmed, "status": "Valid" if token == "20UXUY" else "Not Valid"})
+                    results.append({"address": trimmed, "status": "20UXUY" if token == "20UXUY" else "0UXUY"})
                     valid_count += 1 if token == "20UXUY" else 0
                     not_valid_count += 1 if token != "20UXUY" else 0
                 else:
@@ -76,16 +80,20 @@ def analyze_wallets(request):
                     if not matched_trimmed_row.empty:
                         token = matched_trimmed_row["Token"].values[0]
                         results.append({"address": trimmed, "status": "20UXUY" if token == "20UXUY" else "0UXUY"})
+                        results_20UXUY.append(trimmed)
                         valid_count += 1 if token == "20UXUY" else 0
                         not_valid_count += 1 if token != "20UXUY" else 0
                     else:
                         results.append({"address": trimmed, "status": "0UXUY"})
+                        results_0UXUY.append(trimmed)
                         not_valid_count += 1
 
     context = {
         "token_form": token_form,
         "wallet_form": wallet_form,
         "results": results,
+        "results_20UXUY": results_20UXUY,
+        "results_0UXUY": results_0UXUY,
         "valid_count": valid_count,
         "not_valid_count": not_valid_count,
     }
